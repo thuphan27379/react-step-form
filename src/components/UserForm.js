@@ -1,9 +1,8 @@
 import React, { Component } from "react";
 import FormUserDetails from "./FormUserDetails";
-
-// import FormPersonalDetails from "./FormPersonalDetails";
-// import Confirm from "./Confirm";
-// import Success from "./Success";
+import FormPersonalDetails from "./FormPersonalDetails";
+import Confirm from "./Confirm";
+import Success from "./Success";
 
 export class UserForm extends Component {
   state = {
@@ -16,7 +15,7 @@ export class UserForm extends Component {
     bio: "",
   };
 
-  // create methods: proceed to next step
+  // Proceed to next step
   nextStep = () => {
     const { step } = this.state;
     this.setState({
@@ -24,7 +23,7 @@ export class UserForm extends Component {
     });
   };
 
-  // create methods: proceed to prev step
+  // Go back to prev step
   prevStep = () => {
     const { step } = this.state;
     this.setState({
@@ -32,17 +31,15 @@ export class UserForm extends Component {
     });
   };
 
-  // handle fields change (input value of all fields)
+  // Handle fields change
   handleChange = (input) => (e) => {
     this.setState({ [input]: e.target.value });
   };
 
-  //
   render() {
-    // figure out what step are on and depending on which step are on => decide which components to display
-    const { step } = this.state; // pull out all to fields
+    const { step } = this.state;
     const { firstName, lastName, email, occupation, city, bio } = this.state;
-    const values = { firstName, lastName, email, occupation, city, bio }; // pass all values into each component
+    const values = { firstName, lastName, email, occupation, city, bio };
 
     switch (step) {
       case 1:
@@ -50,16 +47,31 @@ export class UserForm extends Component {
           <FormUserDetails
             nextStep={this.nextStep}
             handleChange={this.handleChange}
-            values={values} // *
-          ></FormUserDetails>
+            values={values}
+          />
         );
       case 2:
-        return <h1>FormPersonalDetails</h1>;
+        return (
+          <FormPersonalDetails
+            nextStep={this.nextStep}
+            prevStep={this.prevStep}
+            handleChange={this.handleChange}
+            values={values}
+          />
+        );
       case 3:
-        return <h1>Confirm</h1>;
-      default:
+        return (
+          <Confirm
+            nextStep={this.nextStep}
+            prevStep={this.prevStep}
+            values={values}
+          />
+        );
       case 4:
-        return <h1>Success</h1>;
+        return <Success />;
+
+      default:
+        console.log("This is a multi-step form built with React.");
     }
   }
 }
